@@ -66,6 +66,7 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Removed external JWT libs; using internal minimal implementation -->
 	</dependencies>
 
 	<build>
