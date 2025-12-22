@@ -1,0 +1,1365 @@
+{
+  "info": {
+    "_postman_id": "c3d4e5f6-g7h8-i9j0-k1l2-m3n4o5p6q7r8",
+    "name": "Eyeglasses Store - Staff/KTV APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "eyeglasses-store-staff"
+  },
+  "item": [
+    {
+      "name": "Appointment Management",
+      "item": [
+        {
+          "name": "Lấy danh sách lịch hẹn",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/appointments?storeId={{store_id}}&date=2024-03-25&status=BOOKED",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "appointments"],
+              "query": [
+                {
+                  "key": "storeId",
+                  "value": "{{store_id}}",
+                  "description": "ID cửa hàng"
+                },
+                {
+                  "key": "date",
+                  "value": "2024-03-25",
+                  "description": "Ngày cần xem lịch"
+                },
+                {
+                  "key": "status",
+                  "value": "BOOKED",
+                  "description": "Trạng thái lịch hẹn"
+                }
+              ]
+            },
+            "description": "Lấy danh sách lịch hẹn của cửa hàng"
+          },
+          "response": [
+            {
+              "name": "Danh sách lịch hẹn",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/appointments?storeId={{store_id}}&date=2024-03-25&status=BOOKED",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "appointments"],
+                  "query": [
+                    {
+                      "key": "storeId",
+                      "value": "{{store_id}}"
+                    },
+                    {
+                      "key": "date",
+                      "value": "2024-03-25"
+                    },
+                    {
+                      "key": "status",
+                      "value": "BOOKED"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"apt-uuid-1\",\n    \"userName\": \"Customer abc12345\",\n    \"userPhone\": \"0123456789\",\n    \"startTime\": \"2024-03-25T09:00:00Z\",\n    \"endTime\": \"2024-03-25T10:00:00Z\",\n    \"status\": \"BOOKED\",\n    \"note\": \"Khám mắt định kỳ\",\n    \"storeName\": \"Cửa hàng Quận 1\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Chi tiết lịch hẹn",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/appointments/{{appointment_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "appointments", "{{appointment_id}}"]
+            },
+            "description": "Lấy thông tin chi tiết lịch hẹn"
+          },
+          "response": [
+            {
+              "name": "Chi tiết lịch hẹn",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/appointments/{{appointment_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "appointments", "{{appointment_id}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"{{appointment_id}}\",\n  \"startTime\": \"2024-03-25T09:00:00Z\",\n  \"endTime\": \"2024-03-25T10:00:00Z\",\n  \"status\": \"BOOKED\",\n  \"note\": \"Khám mắt định kỳ\",\n  \"store\": {\n    \"id\": \"{{store_id}}\",\n    \"name\": \"Cửa hàng Quận 1\",\n    \"address\": \"123 Đường ABC, Quận 1, TP.HCM\"\n  },\n  \"customer\": {\n    \"name\": \"Customer abc12345\",\n    \"phone\": \"0123456789\",\n    \"email\": \"customer@example.com\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Check-in lịch hẹn",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/appointments/{{appointment_id}}/checkin?staffId={{staff_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "appointments", "{{appointment_id}}", "checkin"],
+              "query": [
+                {
+                  "key": "staffId",
+                  "value": "{{staff_id}}",
+                  "description": "ID nhân viên"
+                }
+              ]
+            },
+            "description": "Check-in khách hàng đến hẹn"
+          },
+          "response": [
+            {
+              "name": "Check-in thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/appointments/{{appointment_id}}/checkin?staffId={{staff_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "appointments", "{{appointment_id}}", "checkin"],
+                  "query": [
+                    {
+                      "key": "staffId",
+                      "value": "{{staff_id}}"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"appointmentId\": \"{{appointment_id}}\",\n  \"status\": \"IN_PROGRESS\",\n  \"message\": \"Appointment checked in successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Hoàn thành lịch hẹn",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sphereRight\": -2.5,\n    \"cylinderRight\": -0.5,\n    \"axisRight\": 90,\n    \"sphereLeft\": -2.0,\n    \"cylinderLeft\": -0.25,\n    \"axisLeft\": 85,\n    \"pd\": 62.5,\n    \"note\": \"Kết quả đo mắt bình thường\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/staff/appointments/{{appointment_id}}/complete",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "appointments", "{{appointment_id}}", "complete"]
+            },
+            "description": "Hoàn thành lịch hẹn và lưu kết quả đo mắt"
+          },
+          "response": [
+            {
+              "name": "Hoàn thành thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"sphereRight\": -2.5,\n    \"cylinderRight\": -0.5,\n    \"axisRight\": 90,\n    \"sphereLeft\": -2.0,\n    \"cylinderLeft\": -0.25,\n    \"axisLeft\": 85,\n    \"pd\": 62.5,\n    \"note\": \"Kết quả đo mắt bình thường\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/staff/appointments/{{appointment_id}}/complete",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "appointments", "{{appointment_id}}", "complete"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"appointmentId\": \"{{appointment_id}}\",\n  \"prescriptionId\": \"pres-uuid-1\",\n  \"status\": \"COMPLETED\",\n  \"message\": \"Appointment completed and prescription saved\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Hủy lịch hẹn",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/appointments/{{appointment_id}}/cancel?reason=Khách không đến",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "appointments", "{{appointment_id}}", "cancel"],
+              "query": [
+                {
+                  "key": "reason",
+                  "value": "Khách không đến",
+                  "description": "Lý do hủy"
+                }
+              ]
+            },
+            "description": "Hủy lịch hẹn"
+          },
+          "response": [
+            {
+              "name": "Hủy thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/appointments/{{appointment_id}}/cancel?reason=Khách không đến",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "appointments", "{{appointment_id}}", "cancel"],
+                  "query": [
+                    {
+                      "key": "reason",
+                      "value": "Khách không đến"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"appointmentId\": \"{{appointment_id}}\",\n  \"status\": \"CANCELLED\",\n  \"message\": \"Appointment cancelled successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Dashboard lịch hẹn",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/appointments/dashboard?storeId={{store_id}}&date=2024-03-25",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "appointments", "dashboard"],
+              "query": [
+                {
+                  "key": "storeId",
+                  "value": "{{store_id}}",
+                  "description": "ID cửa hàng"
+                },
+                {
+                  "key": "date",
+                  "value": "2024-03-25",
+                  "description": "Ngày cần xem"
+                }
+              ]
+            },
+            "description": "Lấy dashboard tổng quan lịch hẹn"
+          },
+          "response": [
+            {
+              "name": "Dashboard lịch hẹn",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/appointments/dashboard?storeId={{store_id}}&date=2024-03-25",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "appointments", "dashboard"],
+                  "query": [
+                    {
+                      "key": "storeId",
+                      "value": "{{store_id}}"
+                    },
+                    {
+                      "key": "date",
+                      "value": "2024-03-25"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"date\": \"2024-03-25\",\n  \"storeId\": \"{{store_id}}\",\n  \"totalAppointments\": 5,\n  \"statusCounts\": {\n    \"BOOKED\": 3,\n    \"IN_PROGRESS\": 1,\n    \"COMPLETED\": 1\n  },\n  \"appointments\": [\n    {\n      \"id\": \"apt-uuid-1\",\n      \"startTime\": \"2024-03-25T09:00:00Z\",\n      \"endTime\": \"2024-03-25T10:00:00Z\",\n      \"status\": \"BOOKED\",\n      \"customerName\": \"Customer abc12345\"\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Service Ticket Management",
+      "item": [
+        {
+          "name": "Lấy danh sách service tickets",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/service-tickets?storeId={{store_id}}&status=REQUESTED",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "service-tickets"],
+              "query": [
+                {
+                  "key": "storeId",
+                  "value": "{{store_id}}",
+                  "description": "ID cửa hàng"
+                },
+                {
+                  "key": "status",
+                  "value": "REQUESTED",
+                  "description": "Trạng thái ticket"
+                }
+              ]
+            },
+            "description": "Lấy danh sách service tickets của cửa hàng"
+          },
+          "response": [
+            {
+              "name": "Danh sách service tickets",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/service-tickets?storeId={{store_id}}&status=REQUESTED",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "service-tickets"],
+                  "query": [
+                    {
+                      "key": "storeId",
+                      "value": "{{store_id}}"
+                    },
+                    {
+                      "key": "status",
+                      "value": "REQUESTED"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"ticket-uuid-1\",\n    \"ticketNumber\": \"TKT-abc12345\",\n    \"status\": \"REQUESTED\",\n    \"serviceType\": \"WARRANTY\",\n    \"description\": \"Kính bị trầy xước\",\n    \"createdAt\": \"2024-03-20T10:00:00Z\",\n    \"customerName\": \"Customer abc12345\",\n    \"customerPhone\": \"0123456789\",\n    \"storeName\": \"Cửa hàng Quận 1\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Chi tiết service ticket",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/service-tickets/{{ticket_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "service-tickets", "{{ticket_id}}"]
+            },
+            "description": "Lấy thông tin chi tiết service ticket"
+          },
+          "response": [
+            {
+              "name": "Chi tiết service ticket",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/service-tickets/{{ticket_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "service-tickets", "{{ticket_id}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"{{ticket_id}}\",\n  \"ticketNumber\": \"TKT-abc12345\",\n  \"status\": \"REQUESTED\",\n  \"serviceType\": \"WARRANTY\",\n  \"description\": \"Kính bị trầy xước\",\n  \"createdAt\": \"2024-03-20T10:00:00Z\",\n  \"estimatedCompletion\": null,\n  \"customer\": {\n    \"name\": \"Customer abc12345\",\n    \"phone\": \"0123456789\",\n    \"email\": \"customer@example.com\"\n  },\n  \"store\": {\n    \"id\": \"{{store_id}}\",\n    \"name\": \"Cửa hàng Quận 1\",\n    \"address\": \"123 Đường ABC, Quận 1, TP.HCM\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Tiếp nhận service ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"conditionNotes\": \"Kính bị trầy xước nhẹ ở mặt trước\",\n    \"imageUrls\": [\n        \"https://example.com/condition1.jpg\",\n        \"https://example.com/condition2.jpg\"\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/staff/service-tickets/{{ticket_id}}/receive?staffId={{staff_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "service-tickets", "{{ticket_id}}", "receive"],
+              "query": [
+                {
+                  "key": "staffId",
+                  "value": "{{staff_id}}",
+                  "description": "ID nhân viên"
+                }
+              ]
+            },
+            "description": "Tiếp nhận service ticket từ khách hàng"
+          },
+          "response": [
+            {
+              "name": "Tiếp nhận thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"conditionNotes\": \"Kính bị trầy xước nhẹ ở mặt trước\",\n    \"imageUrls\": [\n        \"https://example.com/condition1.jpg\",\n        \"https://example.com/condition2.jpg\"\n    ]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/staff/service-tickets/{{ticket_id}}/receive?staffId={{staff_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "service-tickets", "{{ticket_id}}", "receive"],
+                  "query": [
+                    {
+                      "key": "staffId",
+                      "value": "{{staff_id}}"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"ticketId\": \"{{ticket_id}}\",\n  \"status\": \"RECEIVED\",\n  \"message\": \"Service ticket received successfully\",\n  \"conditionNotes\": \"Kính bị trầy xước nhẹ ở mặt trước\",\n  \"imageUrls\": [\n    \"https://example.com/condition1.jpg\",\n    \"https://example.com/condition2.jpg\"\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Bắt đầu xử lý",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/service-tickets/{{ticket_id}}/start-processing?staffId={{staff_id}}&processNotes=Bắt đầu đánh bóng kính",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "service-tickets", "{{ticket_id}}", "start-processing"],
+              "query": [
+                {
+                  "key": "staffId",
+                  "value": "{{staff_id}}",
+                  "description": "ID nhân viên"
+                },
+                {
+                  "key": "processNotes",
+                  "value": "Bắt đầu đánh bóng kính",
+                  "description": "Ghi chú quá trình"
+                }
+              ]
+            },
+            "description": "Bắt đầu xử lý service ticket"
+          },
+          "response": [
+            {
+              "name": "Bắt đầu xử lý thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/service-tickets/{{ticket_id}}/start-processing?staffId={{staff_id}}&processNotes=Bắt đầu đánh bóng kính",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "service-tickets", "{{ticket_id}}", "start-processing"],
+                  "query": [
+                    {
+                      "key": "staffId",
+                      "value": "{{staff_id}}"
+                    },
+                    {
+                      "key": "processNotes",
+                      "value": "Bắt đầu đánh bóng kính"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"ticketId\": \"{{ticket_id}}\",\n  \"status\": \"PROCESSING\",\n  \"message\": \"Service processing started\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Ước lượng chi phí",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/service-tickets/{{ticket_id}}/estimate?estimatedCost=200000&estimatedTime=2 ngày&materials=Kem đánh bóng",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "service-tickets", "{{ticket_id}}", "estimate"],
+              "query": [
+                {
+                  "key": "estimatedCost",
+                  "value": "200000",
+                  "description": "Chi phí ước tính"
+                },
+                {
+                  "key": "estimatedTime",
+                  "value": "2 ngày",
+                  "description": "Thời gian ước tính"
+                },
+                {
+                  "key": "materials",
+                  "value": "Kem đánh bóng",
+                  "description": "Vật liệu cần thiết"
+                }
+              ]
+            },
+            "description": "Ước lượng chi phí và thời gian xử lý"
+          },
+          "response": [
+            {
+              "name": "Ước lượng thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/service-tickets/{{ticket_id}}/estimate?estimatedCost=200000&estimatedTime=2 ngày&materials=Kem đánh bóng",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "service-tickets", "{{ticket_id}}", "estimate"],
+                  "query": [
+                    {
+                      "key": "estimatedCost",
+                      "value": "200000"
+                    },
+                    {
+                      "key": "estimatedTime",
+                      "value": "2 ngày"
+                    },
+                    {
+                      "key": "materials",
+                      "value": "Kem đánh bóng"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"ticketId\": \"{{ticket_id}}\",\n  \"status\": \"ESTIMATE\",\n  \"estimatedCost\": 200000,\n  \"estimatedTime\": \"2 ngày\",\n  \"materials\": \"Kem đánh bóng\",\n  \"message\": \"Service estimate provided\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Hoàn thành service",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/service-tickets/{{ticket_id}}/complete?staffId={{staff_id}}&completionNotes=Đã hoàn thành đánh bóng&finalCost=180000",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "service-tickets", "{{ticket_id}}", "complete"],
+              "query": [
+                {
+                  "key": "staffId",
+                  "value": "{{staff_id}}",
+                  "description": "ID nhân viên"
+                },
+                {
+                  "key": "completionNotes",
+                  "value": "Đã hoàn thành đánh bóng",
+                  "description": "Ghi chú hoàn thành"
+                },
+                {
+                  "key": "finalCost",
+                  "value": "180000",
+                  "description": "Chi phí cuối cùng"
+                }
+              ]
+            },
+            "description": "Hoàn thành xử lý service ticket"
+          },
+          "response": [
+            {
+              "name": "Hoàn thành thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/service-tickets/{{ticket_id}}/complete?staffId={{staff_id}}&completionNotes=Đã hoàn thành đánh bóng&finalCost=180000",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "service-tickets", "{{ticket_id}}", "complete"],
+                  "query": [
+                    {
+                      "key": "staffId",
+                      "value": "{{staff_id}}"
+                    },
+                    {
+                      "key": "completionNotes",
+                      "value": "Đã hoàn thành đánh bóng"
+                    },
+                    {
+                      "key": "finalCost",
+                      "value": "180000"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"ticketId\": \"{{ticket_id}}\",\n  \"status\": \"DONE\",\n  \"finalCost\": 180000,\n  \"message\": \"Service completed successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Tạo ticket walk-in",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerName\": \"Nguyễn Văn B\",\n    \"customerPhone\": \"0987654321\",\n    \"serviceType\": \"CLEANING\",\n    \"description\": \"Làm sạch kính\",\n    \"conditionNotes\": \"Kính bẩn, cần vệ sinh\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/staff/service-tickets/walk-in?storeId={{store_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "service-tickets", "walk-in"],
+              "query": [
+                {
+                  "key": "storeId",
+                  "value": "{{store_id}}",
+                  "description": "ID cửa hàng"
+                }
+              ]
+            },
+            "description": "Tạo service ticket cho khách walk-in"
+          },
+          "response": [
+            {
+              "name": "Tạo ticket walk-in thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"customerName\": \"Nguyễn Văn B\",\n    \"customerPhone\": \"0987654321\",\n    \"serviceType\": \"CLEANING\",\n    \"description\": \"Làm sạch kính\",\n    \"conditionNotes\": \"Kính bẩn, cần vệ sinh\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/staff/service-tickets/walk-in?storeId={{store_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "service-tickets", "walk-in"],
+                  "query": [
+                    {
+                      "key": "storeId",
+                      "value": "{{store_id}}"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"ticketId\": \"ticket-uuid-2\",\n  \"ticketNumber\": \"TKT-def67890\",\n  \"status\": \"RECEIVED\",\n  \"customerName\": \"Nguyễn Văn B\",\n  \"customerPhone\": \"0987654321\",\n  \"message\": \"Walk-in service ticket created successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Dashboard service tickets",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/service-tickets/dashboard?storeId={{store_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "service-tickets", "dashboard"],
+              "query": [
+                {
+                  "key": "storeId",
+                  "value": "{{store_id}}",
+                  "description": "ID cửa hàng"
+                }
+              ]
+            },
+            "description": "Lấy dashboard tổng quan service tickets"
+          },
+          "response": [
+            {
+              "name": "Dashboard service tickets",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/service-tickets/dashboard?storeId={{store_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "service-tickets", "dashboard"],
+                  "query": [
+                    {
+                      "key": "storeId",
+                      "value": "{{store_id}}"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"storeId\": \"{{store_id}}\",\n  \"totalTickets\": 10,\n  \"statusCounts\": {\n    \"REQUESTED\": 3,\n    \"RECEIVED\": 2,\n    \"PROCESSING\": 2,\n    \"ESTIMATE\": 1,\n    \"DONE\": 2\n  },\n  \"recentTickets\": [\n    {\n      \"id\": \"ticket-uuid-1\",\n      \"ticketNumber\": \"TKT-abc12345\",\n      \"status\": \"REQUESTED\",\n      \"serviceType\": \"WARRANTY\",\n      \"createdAt\": \"2024-03-20T10:00:00Z\"\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Prescription Management",
+      "item": [
+        {
+          "name": "Lấy toa kính theo user",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/prescriptions/user/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "prescriptions", "user", "{{user_id}}"]
+            },
+            "description": "Lấy danh sách toa kính của người dùng"
+          },
+          "response": [
+            {
+              "name": "Danh sách toa kính",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/prescriptions/user/{{user_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "prescriptions", "user", "{{user_id}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"pres-uuid-1\",\n    \"sphereRight\": -2.5,\n    \"cylinderRight\": -0.5,\n    \"axisRight\": 90,\n    \"sphereLeft\": -2.0,\n    \"cylinderLeft\": -0.25,\n    \"axisLeft\": 85,\n    \"pd\": 62.5,\n    \"note\": \"Kết quả đo mắt bình thường\",\n    \"source\": \"EYE_EXAM\",\n    \"issuedAt\": \"2024-03-20\",\n    \"createdAt\": \"2024-03-20T10:00:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Chi tiết toa kính",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/prescriptions/{{prescription_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "prescriptions", "{{prescription_id}}"]
+            },
+            "description": "Lấy thông tin chi tiết toa kính"
+          },
+          "response": [
+            {
+              "name": "Chi tiết toa kính",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/prescriptions/{{prescription_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "prescriptions", "{{prescription_id}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"{{prescription_id}}\",\n  \"sphereRight\": -2.5,\n  \"cylinderRight\": -0.5,\n  \"axisRight\": 90,\n  \"sphereLeft\": -2.0,\n  \"cylinderLeft\": -0.25,\n  \"axisLeft\": 85,\n  \"pd\": 62.5,\n  \"note\": \"Kết quả đo mắt bình thường\",\n  \"source\": \"EYE_EXAM\",\n  \"issuedAt\": \"2024-03-20\",\n  \"createdAt\": \"2024-03-20T10:00:00Z\",\n  \"customer\": {\n    \"name\": \"Customer abc12345\",\n    \"phone\": \"0123456789\",\n    \"email\": \"customer@example.com\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Tạo toa kính mới",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sphereRight\": -3.0,\n    \"cylinderRight\": -0.75,\n    \"axisRight\": 95,\n    \"sphereLeft\": -2.5,\n    \"cylinderLeft\": -0.5,\n    \"axisLeft\": 90,\n    \"pd\": 64.0,\n    \"note\": \"Toa kính mới cho khách hàng\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/staff/prescriptions?userId={{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "prescriptions"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{user_id}}",
+                  "description": "ID người dùng"
+                }
+              ]
+            },
+            "description": "Tạo toa kính mới cho người dùng"
+          },
+          "response": [
+            {
+              "name": "Tạo toa thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"sphereRight\": -3.0,\n    \"cylinderRight\": -0.75,\n    \"axisRight\": 95,\n    \"sphereLeft\": -2.5,\n    \"cylinderLeft\": -0.5,\n    \"axisLeft\": 90,\n    \"pd\": 64.0,\n    \"note\": \"Toa kính mới cho khách hàng\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/staff/prescriptions?userId={{user_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "prescriptions"],
+                  "query": [
+                    {
+                      "key": "userId",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"prescriptionId\": \"pres-uuid-2\",\n  \"message\": \"Prescription created successfully\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Validate toa kính",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sphereRight\": -3.0,\n    \"cylinderRight\": -0.75,\n    \"axisRight\": 95,\n    \"sphereLeft\": -2.5,\n    \"cylinderLeft\": -0.5,\n    \"axisLeft\": 90,\n    \"pd\": 64.0\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/staff/prescriptions/validate",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "prescriptions", "validate"]
+            },
+            "description": "Validate toa kính trước khi lưu"
+          },
+          "response": [
+            {
+              "name": "Validate thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"sphereRight\": -3.0,\n    \"cylinderRight\": -0.75,\n    \"axisRight\": 95,\n    \"sphereLeft\": -2.5,\n    \"cylinderLeft\": -0.5,\n    \"axisLeft\": 90,\n    \"pd\": 64.0\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/staff/prescriptions/validate",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "prescriptions", "validate"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"valid\": true,\n  \"errors\": [],\n  \"warnings\": [\n    \"High prescription detected - consider premium lens options\",\n    \"Astigmatism detected - ensure proper axis alignment\"\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Tạo báo cáo toa kính",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staff_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/staff/prescriptions/{{prescription_id}}/report",
+              "host": ["{{base_url}}"],
+              "path": ["staff", "prescriptions", "{{prescription_id}}", "report"]
+            },
+            "description": "Tạo báo cáo toa kính để in"
+          },
+          "response": [
+            {
+              "name": "Báo cáo toa kính",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{staff_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/staff/prescriptions/{{prescription_id}}/report",
+                  "host": ["{{base_url}}"],
+                  "path": ["staff", "prescriptions", "{{prescription_id}}", "report"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"prescriptionId\": \"{{prescription_id}}\",\n  \"generatedAt\": \"2024-03-20T10:00:00Z\",\n  \"prescription\": {\n    \"sphereRight\": -2.5,\n    \"cylinderRight\": -0.5,\n    \"axisRight\": 90,\n    \"sphereLeft\": -2.0,\n    \"cylinderLeft\": -0.25,\n    \"axisLeft\": 85,\n    \"pd\": 62.5,\n    \"note\": \"Kết quả đo mắt bình thường\",\n    \"source\": \"EYE_EXAM\",\n    \"issuedAt\": \"2024-03-20\"\n  },\n  \"customer\": {\n    \"name\": \"Customer abc12345\",\n    \"phone\": \"0123456789\",\n    \"email\": \"customer@example.com\"\n  },\n  \"downloadUrl\": \"/api/v1/staff/prescriptions/{{prescription_id}}/report.pdf\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "staff_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "store_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "staff_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "appointment_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ticket_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "prescription_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
+

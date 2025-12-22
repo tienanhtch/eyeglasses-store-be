@@ -1,0 +1,1280 @@
+{
+  "info": {
+    "_postman_id": "d4e5f6g7-h8i9-j0k1-l2m3-n4o5p6q7r8s9",
+    "name": "Eyeglasses Store - Admin APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "eyeglasses-store-admin"
+  },
+  "item": [
+    {
+      "name": "Catalog Management",
+      "item": [
+        {
+          "name": "Categories",
+          "item": [
+            {
+              "name": "Lấy danh sách danh mục",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/categories",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "categories"]
+                },
+                "description": "Lấy danh sách tất cả danh mục"
+              },
+              "response": [
+                {
+                  "name": "Danh sách danh mục",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{admin_token}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/admin/categories",
+                      "host": ["{{base_url}}"],
+                      "path": ["admin", "categories"]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "[\n  {\n    \"id\": \"cat-uuid-1\",\n    \"slug\": \"kinh-can\",\n    \"name\": \"Kính cận\",\n    \"description\": \"Kính cận thị\",\n    \"sortOrder\": 1,\n    \"isActive\": true,\n    \"parentId\": null\n  }\n]"
+                }
+              ]
+            },
+            {
+              "name": "Tạo danh mục mới",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"slug\": \"kinh-ram-cao-cap\",\n    \"name\": \"Kính râm cao cấp\",\n    \"description\": \"Kính mát cao cấp\",\n    \"sortOrder\": 2,\n    \"parentId\": null\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/categories",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "categories"]
+                },
+                "description": "Tạo danh mục mới"
+              },
+              "response": [
+                {
+                  "name": "Tạo danh mục thành công",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                      },
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{admin_token}}",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"slug\": \"kinh-ram-cao-cap\",\n    \"name\": \"Kính râm cao cấp\",\n    \"description\": \"Kính mát cao cấp\",\n    \"sortOrder\": 2,\n    \"parentId\": null\n}"
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/admin/categories",
+                      "host": ["{{base_url}}"],
+                      "path": ["admin", "categories"]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"success\": true,\n  \"message\": \"Category created successfully\",\n  \"data\": {\n    \"id\": \"cat-uuid-2\",\n    \"slug\": \"kinh-ram-cao-cap\",\n    \"name\": \"Kính râm cao cấp\",\n    \"description\": \"Kính mát cao cấp\",\n    \"sortOrder\": 2,\n    \"isActive\": true\n  }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Cập nhật danh mục",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Kính râm cao cấp (Updated)\",\n    \"description\": \"Kính mát cao cấp đã cập nhật\",\n    \"sortOrder\": 3\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/categories/{{category_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "categories", "{{category_id}}"]
+                },
+                "description": "Cập nhật thông tin danh mục"
+              },
+              "response": [
+                {
+                  "name": "Cập nhật thành công",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                      },
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{admin_token}}",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"name\": \"Kính râm cao cấp (Updated)\",\n    \"description\": \"Kính mát cao cấp đã cập nhật\",\n    \"sortOrder\": 3\n}"
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/admin/categories/{{category_id}}",
+                      "host": ["{{base_url}}"],
+                      "path": ["admin", "categories", "{{category_id}}"]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"success\": true,\n  \"message\": \"Category updated successfully\",\n  \"data\": {\n    \"id\": \"{{category_id}}\",\n    \"name\": \"Kính râm cao cấp (Updated)\",\n    \"description\": \"Kính mát cao cấp đã cập nhật\",\n    \"sortOrder\": 3\n  }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Xóa danh mục",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/categories/{{category_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "categories", "{{category_id}}"]
+                },
+                "description": "Xóa danh mục"
+              },
+              "response": [
+                {
+                  "name": "Xóa thành công",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{admin_token}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/admin/categories/{{category_id}}",
+                      "host": ["{{base_url}}"],
+                      "path": ["admin", "categories", "{{category_id}}"]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"success\": true,\n  \"message\": \"Category deleted successfully\"\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Products",
+          "item": [
+            {
+              "name": "Lấy danh sách sản phẩm",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/products?page=0&size=20&sortBy=createdAt&sortOrder=desc",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "products"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0",
+                      "description": "Trang"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20",
+                      "description": "Số lượng mỗi trang"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "createdAt",
+                      "description": "Sắp xếp theo"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "desc",
+                      "description": "Thứ tự sắp xếp"
+                    }
+                  ]
+                },
+                "description": "Lấy danh sách sản phẩm với phân trang"
+              },
+              "response": [
+                {
+                  "name": "Danh sách sản phẩm",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{admin_token}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{base_url}}/admin/products?page=0&size=20&sortBy=createdAt&sortOrder=desc",
+                      "host": ["{{base_url}}"],
+                      "path": ["admin", "products"],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "key": "size",
+                          "value": "20"
+                        },
+                        {
+                          "key": "sortBy",
+                          "value": "createdAt"
+                        },
+                        {
+                          "key": "sortOrder",
+                          "value": "desc"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"content\": [\n    {\n      \"id\": \"prod-uuid-1\",\n      \"slug\": \"gong-kinh-titan\",\n      \"name\": \"Gọng kính Titan cao cấp\",\n      \"description\": \"Gọng kính titan siêu nhẹ\",\n      \"brand\": \"Ray-Ban\",\n      \"material\": \"Titanium\",\n      \"frameShape\": \"Oval\",\n      \"isPublished\": true,\n      \"createdAt\": \"2024-03-20T10:00:00Z\"\n    }\n  ],\n  \"totalElements\": 1,\n  \"totalPages\": 1,\n  \"currentPage\": 0,\n  \"pageSize\": 20\n}"
+                }
+              ]
+            },
+            {
+              "name": "Tạo sản phẩm mới",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"slug\": \"gong-kinh-acetate\",\n    \"name\": \"Gọng kính Acetate thời trang\",\n    \"description\": \"Gọng kính acetate cao cấp\",\n    \"brand\": \"Oakley\",\n    \"material\": \"Acetate\",\n    \"frameShape\": \"Rectangle\",\n    \"seoTitle\": \"Gọng kính Acetate Oakley\",\n    \"seoDescription\": \"Gọng kính acetate thời trang\",\n    \"categoryIds\": [\"cat-uuid-1\"]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/products",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "products"]
+                },
+                "description": "Tạo sản phẩm mới"
+              },
+              "response": [
+                {
+                  "name": "Tạo sản phẩm thành công",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                      },
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{admin_token}}",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"slug\": \"gong-kinh-acetate\",\n    \"name\": \"Gọng kính Acetate thời trang\",\n    \"description\": \"Gọng kính acetate cao cấp\",\n    \"brand\": \"Oakley\",\n    \"material\": \"Acetate\",\n    \"frameShape\": \"Rectangle\",\n    \"seoTitle\": \"Gọng kính Acetate Oakley\",\n    \"seoDescription\": \"Gọng kính acetate thời trang\",\n    \"categoryIds\": [\"cat-uuid-1\"]\n}"
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/admin/products",
+                      "host": ["{{base_url}}"],
+                      "path": ["admin", "products"]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"success\": true,\n  \"message\": \"Product created successfully\",\n  \"data\": {\n    \"id\": \"prod-uuid-2\",\n    \"slug\": \"gong-kinh-acetate\",\n    \"name\": \"Gọng kính Acetate thời trang\",\n    \"description\": \"Gọng kính acetate cao cấp\",\n    \"brand\": \"Oakley\",\n    \"material\": \"Acetate\",\n    \"frameShape\": \"Rectangle\",\n    \"isPublished\": true\n  }\n}"
+                }
+              ]
+            },
+            {
+              "name": "Upload ảnh sản phẩm",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "src": "/path/to/image.jpg",
+                      "description": "File ảnh sản phẩm"
+                    },
+                    {
+                      "key": "productId",
+                      "value": "{{product_id}}",
+                      "type": "text",
+                      "description": "ID sản phẩm"
+                    },
+                    {
+                      "key": "alt",
+                      "value": "Gọng kính Acetate",
+                      "type": "text",
+                      "description": "Mô tả ảnh"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "1",
+                      "type": "text",
+                      "description": "Thứ tự ảnh"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/images/upload",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "images", "upload"]
+                },
+                "description": "Upload ảnh cho sản phẩm"
+              },
+              "response": [
+                {
+                  "name": "Upload thành công",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{admin_token}}",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "file",
+                          "type": "file",
+                          "src": "/path/to/image.jpg"
+                        },
+                        {
+                          "key": "productId",
+                          "value": "{{product_id}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "alt",
+                          "value": "Gọng kính Acetate",
+                          "type": "text"
+                        },
+                        {
+                          "key": "sortOrder",
+                          "value": "1",
+                          "type": "text"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{base_url}}/admin/images/upload",
+                      "host": ["{{base_url}}"],
+                      "path": ["admin", "images", "upload"]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"success\": true,\n  \"message\": \"Image uploaded successfully\",\n  \"data\": {\n    \"id\": \"img-uuid-1\",\n    \"url\": \"https://example.com/uploads/product-image-1.jpg\",\n    \"alt\": \"Gọng kính Acetate\",\n    \"sortOrder\": 1\n  }\n}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Order Management",
+      "item": [
+        {
+          "name": "Lấy danh sách đơn hàng",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/orders?page=0&size=20&status=PENDING",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "orders"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "Trang"
+                },
+                {
+                  "key": "size",
+                  "value": "20",
+                  "description": "Số lượng mỗi trang"
+                },
+                {
+                  "key": "status",
+                  "value": "PENDING",
+                  "description": "Trạng thái đơn hàng"
+                }
+              ]
+            },
+            "description": "Lấy danh sách đơn hàng với bộ lọc"
+          },
+          "response": [
+            {
+              "name": "Danh sách đơn hàng",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/orders?page=0&size=20&status=PENDING",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "orders"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "status",
+                      "value": "PENDING"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": \"order-uuid-1\",\n      \"orderNumber\": \"ORD-20240320001\",\n      \"status\": \"PENDING\",\n      \"fulfillment\": \"DELIVERY\",\n      \"subtotal\": 1700000,\n      \"shippingFee\": 30000,\n      \"taxTotal\": 138400,\n      \"grandTotal\": 1868400,\n      \"createdAt\": \"2024-03-20T10:00:00Z\"\n    }\n  ],\n  \"totalElements\": 1,\n  \"totalPages\": 1,\n  \"currentPage\": 0,\n  \"pageSize\": 20\n}"
+            }
+          ]
+        },
+        {
+          "name": "Chi tiết đơn hàng",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/orders/{{order_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "orders", "{{order_id}}"]
+            },
+            "description": "Lấy thông tin chi tiết đơn hàng"
+          },
+          "response": [
+            {
+              "name": "Chi tiết đơn hàng",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "orders", "{{order_id}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": \"{{order_id}}\",\n  \"orderNumber\": \"ORD-20240320001\",\n  \"status\": \"PENDING\",\n  \"fulfillment\": \"DELIVERY\",\n  \"subtotal\": 1700000,\n  \"shippingFee\": 30000,\n  \"taxTotal\": 138400,\n  \"grandTotal\": 1868400,\n  \"customer\": {\n    \"id\": \"user-uuid-1\",\n    \"name\": \"Nguyễn Văn A\",\n    \"email\": \"customer@example.com\",\n    \"phone\": \"0123456789\"\n  },\n  \"items\": [\n    {\n      \"id\": \"item-uuid-1\",\n      \"variant\": {\n        \"sku\": \"RB-TITAN-001\",\n        \"color\": \"Đen\"\n      },\n      \"qty\": 1,\n      \"priceUnit\": 1200000,\n      \"lineTotal\": 1200000\n    }\n  ],\n  \"createdAt\": \"2024-03-20T10:00:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Cập nhật trạng thái đơn hàng",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"PROCESSING\",\n    \"note\": \"Đơn hàng đang được xử lý\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/orders/{{order_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "orders", "{{order_id}}", "status"]
+            },
+            "description": "Cập nhật trạng thái đơn hàng"
+          },
+          "response": [
+            {
+              "name": "Cập nhật thành công",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"status\": \"PROCESSING\",\n    \"note\": \"Đơn hàng đang được xử lý\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/status",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "orders", "{{order_id}}", "status"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Order status updated successfully\",\n  \"data\": {\n    \"orderId\": \"{{order_id}}\",\n    \"oldStatus\": \"PENDING\",\n    \"newStatus\": \"PROCESSING\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Xử lý đơn hàng",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/orders/{{order_id}}/process",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "orders", "{{order_id}}", "process"]
+            },
+            "description": "Bắt đầu xử lý đơn hàng"
+          },
+          "response": [
+            {
+              "name": "Xử lý thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/process",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "orders", "{{order_id}}", "process"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Order processing started\",\n  \"data\": {\n    \"orderId\": \"{{order_id}}\",\n    \"status\": \"PROCESSING\",\n    \"inventoryReserved\": true\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Giao hàng",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"trackingNumber\": \"VN123456789\",\n    \"shippingMethod\": \"EXPRESS\",\n    \"estimatedDelivery\": \"2024-03-22T18:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/orders/{{order_id}}/ship",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "orders", "{{order_id}}", "ship"]
+            },
+            "description": "Giao hàng đơn hàng"
+          },
+          "response": [
+            {
+              "name": "Giao hàng thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"trackingNumber\": \"VN123456789\",\n    \"shippingMethod\": \"EXPRESS\",\n    \"estimatedDelivery\": \"2024-03-22T18:00:00Z\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/orders/{{order_id}}/ship",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "orders", "{{order_id}}", "ship"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Order shipped successfully\",\n  \"data\": {\n    \"orderId\": \"{{order_id}}\",\n    \"status\": \"SHIPPED\",\n    \"trackingNumber\": \"VN123456789\",\n    \"shippingLabel\": \"/api/v1/admin/shipping/labels/{{order_id}}/download\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Lấy danh sách người dùng",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/users?page=0&size=20&role=CUSTOMER",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "Trang"
+                },
+                {
+                  "key": "size",
+                  "value": "20",
+                  "description": "Số lượng mỗi trang"
+                },
+                {
+                  "key": "role",
+                  "value": "CUSTOMER",
+                  "description": "Vai trò người dùng"
+                }
+              ]
+            },
+            "description": "Lấy danh sách người dùng với bộ lọc"
+          },
+          "response": [
+            {
+              "name": "Danh sách người dùng",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/users?page=0&size=20&role=CUSTOMER",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "users"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "role",
+                      "value": "CUSTOMER"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": \"user-uuid-1\",\n      \"email\": \"customer@example.com\",\n      \"fullName\": \"Nguyễn Văn A\",\n      \"phone\": \"0123456789\",\n      \"isActive\": true,\n      \"roles\": [\"CUSTOMER\"],\n      \"createdAt\": \"2024-03-20T10:00:00Z\"\n    }\n  ],\n  \"totalElements\": 1,\n  \"totalPages\": 1,\n  \"currentPage\": 0,\n  \"pageSize\": 20\n}"
+            }
+          ]
+        },
+        {
+          "name": "Tạo người dùng mới",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"staff@eyeglasses.com\",\n    \"password\": \"staff123\",\n    \"fullName\": \"Nhân viên KTV\",\n    \"phone\": \"0987654321\",\n    \"roleIds\": [\"role-staff-uuid\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users"]
+            },
+            "description": "Tạo tài khoản người dùng mới"
+          },
+          "response": [
+            {
+              "name": "Tạo người dùng thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"staff@eyeglasses.com\",\n    \"password\": \"staff123\",\n    \"fullName\": \"Nhân viên KTV\",\n    \"phone\": \"0987654321\",\n    \"roleIds\": [\"role-staff-uuid\"]\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/users",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "users"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User created successfully\",\n  \"data\": {\n    \"id\": \"user-uuid-2\",\n    \"email\": \"staff@eyeglasses.com\",\n    \"fullName\": \"Nhân viên KTV\",\n    \"phone\": \"0987654321\",\n    \"isActive\": true,\n    \"roles\": [\"STAFF\"]\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Khóa tài khoản",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/users/{{user_id}}/lock",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users", "{{user_id}}", "lock"]
+            },
+            "description": "Khóa tài khoản người dùng"
+          },
+          "response": [
+            {
+              "name": "Khóa tài khoản thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/users/{{user_id}}/lock",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "users", "{{user_id}}", "lock"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"User account locked successfully\",\n  \"data\": {\n    \"userId\": \"{{user_id}}\",\n    \"isActive\": false\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Reset mật khẩu",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/users/{{user_id}}/reset-password",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users", "{{user_id}}", "reset-password"]
+            },
+            "description": "Reset mật khẩu người dùng"
+          },
+          "response": [
+            {
+              "name": "Reset mật khẩu thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/users/{{user_id}}/reset-password",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "users", "{{user_id}}", "reset-password"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Password reset successfully\",\n  \"data\": {\n    \"userId\": \"{{user_id}}\",\n    \"newPassword\": \"temp123456\",\n    \"expiresAt\": \"2024-03-27T10:00:00Z\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Store Management",
+      "item": [
+        {
+          "name": "Lấy danh sách cửa hàng",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/stores",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "stores"]
+            },
+            "description": "Lấy danh sách tất cả cửa hàng"
+          },
+          "response": [
+            {
+              "name": "Danh sách cửa hàng",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/stores",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "stores"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": \"store-uuid-1\",\n    \"code\": \"ST001\",\n    \"name\": \"Cửa hàng Quận 1\",\n    \"address\": \"123 Đường ABC, Quận 1, TP.HCM\",\n    \"lat\": 10.7769,\n    \"lng\": 106.7009,\n    \"phone\": \"0123456789\",\n    \"openHours\": \"8:00-20:00\",\n    \"isActive\": true\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Tạo cửa hàng mới",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"ST002\",\n    \"name\": \"Cửa hàng Quận 2\",\n    \"address\": \"456 Đường XYZ, Quận 2, TP.HCM\",\n    \"lat\": 10.7870,\n    \"lng\": 106.7051,\n    \"phone\": \"0987654321\",\n    \"openHours\": \"9:00-21:00\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/stores",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "stores"]
+            },
+            "description": "Tạo cửa hàng mới"
+          },
+          "response": [
+            {
+              "name": "Tạo cửa hàng thành công",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"code\": \"ST002\",\n    \"name\": \"Cửa hàng Quận 2\",\n    \"address\": \"456 Đường XYZ, Quận 2, TP.HCM\",\n    \"lat\": 10.7870,\n    \"lng\": 106.7051,\n    \"phone\": \"0987654321\",\n    \"openHours\": \"9:00-21:00\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/stores",
+                  "host": ["{{base_url}}"],
+                  "path": ["admin", "stores"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Store created successfully\",\n  \"data\": {\n    \"id\": \"store-uuid-2\",\n    \"code\": \"ST002\",\n    \"name\": \"Cửa hàng Quận 2\",\n    \"address\": \"456 Đường XYZ, Quận 2, TP.HCM\",\n    \"isActive\": true\n  }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "admin_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "category_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "product_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "order_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "store_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
+
