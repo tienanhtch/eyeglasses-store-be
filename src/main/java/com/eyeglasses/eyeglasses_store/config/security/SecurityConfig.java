@@ -60,7 +60,7 @@ public class SecurityConfig {
         configuration.setAllowedOriginPatterns(List.of("*"));
 
         // Allow common HTTP methods
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
         // Allow common headers
         configuration.setAllowedHeaders(Arrays.asList("*"));

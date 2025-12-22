@@ -64,6 +64,12 @@ public class Order {
     @Column(name = "grand_total", nullable = false, precision = 12, scale = 2)
     private BigDecimal grandTotal = BigDecimal.ZERO;
 
+    @Column(name = "payment_method", length = 20)
+    private String paymentMethod = "COD"; // VNPAY, MOMO, COD
+
+    @Column(name = "payment_status", length = 20)
+    private String paymentStatus = "UNPAID"; // UNPAID, PAID, FAILED, REFUNDED
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
@@ -178,5 +184,21 @@ public class Order {
 
     public OffsetDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 }
