@@ -49,6 +49,12 @@ public class Product {
     @Column(name = "is_published", nullable = false)
     private boolean published = true;
 
+    @Column(name = "is_new", nullable = false)
+    private boolean isNew = false;
+
+    @Column(name = "is_best_seller", nullable = false)
+    private boolean isBestSeller = false;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
@@ -135,6 +141,22 @@ public class Product {
 
     public void setPublished(boolean published) {
         this.published = published;
+    }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean isNew) {
+        this.isNew = isNew;
+    }
+
+    public boolean isBestSeller() {
+        return isBestSeller;
+    }
+
+    public void setBestSeller(boolean isBestSeller) {
+        this.isBestSeller = isBestSeller;
     }
 
     public OffsetDateTime getCreatedAt() {

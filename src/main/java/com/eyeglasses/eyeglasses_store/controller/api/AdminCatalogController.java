@@ -47,8 +47,31 @@ public class AdminCatalogController {
 
     // Products
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> listProducts() {
-        return ResponseEntity.ok(adminCatalogService.listProducts());
+    public ResponseEntity<Map<String, Object>> listProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortOrder) {
+        List<Product> allProducts = adminCatalogService.listProducts();
+        
+        // Calculate pagination
+        int totalElements = allProducts.size();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+        int start = page * size;
+        int end = Math.min(start + size, totalElements);
+        
+        // Get page content
+        List<Product> content = (start < totalElements) 
+            ? allProducts.subList(start, end) 
+            : List.of();
+        
+        return ResponseEntity.ok(Map.of(
+            "content", content,
+            "totalElements", totalElements,
+            "totalPages", totalPages,
+            "currentPage", page,
+            "pageSize", size
+        ));
     }
 
     @PostMapping("/products")

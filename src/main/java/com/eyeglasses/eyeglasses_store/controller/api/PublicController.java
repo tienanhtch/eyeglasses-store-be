@@ -81,14 +81,16 @@ public class PublicController {
             @org.springframework.web.bind.annotation.RequestParam(value = "category", required = false) String categorySlug,
             @org.springframework.web.bind.annotation.RequestParam(value = "material", required = false) String material,
             @org.springframework.web.bind.annotation.RequestParam(value = "frameShape", required = false) String frameShape,
+            @org.springframework.web.bind.annotation.RequestParam(value = "isNew", required = false) Boolean isNew,
+            @org.springframework.web.bind.annotation.RequestParam(value = "isBestSeller", required = false) Boolean isBestSeller,
             @org.springframework.web.bind.annotation.RequestParam(value = "minPrice", required = false) java.math.BigDecimal minPrice,
             @org.springframework.web.bind.annotation.RequestParam(value = "maxPrice", required = false) java.math.BigDecimal maxPrice,
             @org.springframework.web.bind.annotation.RequestParam(value = "page", required = false) Integer page,
             @org.springframework.web.bind.annotation.RequestParam(value = "size", required = false) Integer size,
             @org.springframework.web.bind.annotation.RequestParam(value = "sort", required = false) String sort,
             @org.springframework.web.bind.annotation.RequestParam(value = "direction", required = false) String direction) {
-        return ResponseEntity.ok(publicCatalogService.searchProducts(q, categorySlug, material, frameShape, page, size,
-                sort, direction, minPrice, maxPrice));
+        return ResponseEntity.ok(publicCatalogService.searchProducts(q, categorySlug, material, frameShape,
+                isNew, isBestSeller, page, size, sort, direction, minPrice, maxPrice));
     }
 
     /**

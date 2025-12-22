@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -75,28 +76,34 @@ public class PublicCatalogService {
                                         "name", c.getName())).toList());
 
                         List<ProductVariant> variants = variantsByProduct.getOrDefault(p.getId(), List.of());
-                        m.put("variants", variants.stream().map(v -> Map.of(
-                                        "id", v.getId(),
-                                        "sku", v.getSku(),
-                                        "color", v.getColor(),
-                                        "sizeMm", v.getSizeMm(),
-                                        "bridgeMm", v.getBridgeMm(),
-                                        "templeMm", v.getTempleMm(),
-                                        "costPrice", v.getCostPrice(),
-                                        "retailPrice", v.getRetailPrice(),
-                                        "salePrice", v.getSalePrice(),
-                                        "active", v.isActive())).toList());
+                        m.put("variants", variants.stream().map(v -> {
+                                Map<String, Object> vm = new LinkedHashMap<>();
+                                vm.put("id", v.getId());
+                                vm.put("sku", v.getSku());
+                                vm.put("color", v.getColor());
+                                vm.put("sizeMm", v.getSizeMm());
+                                vm.put("bridgeMm", v.getBridgeMm());
+                                vm.put("templeMm", v.getTempleMm());
+                                vm.put("costPrice", v.getCostPrice());
+                                vm.put("retailPrice", v.getRetailPrice());
+                                vm.put("salePrice", v.getSalePrice());
+                                vm.put("active", v.isActive());
+                                return vm;
+                        }).toList());
 
                         List<ProductImage> images = imagesByProduct.getOrDefault(p.getId(), List.of());
                         m.put("images",
                                         images.stream()
                                                         .sorted(Comparator.comparingInt(i -> Optional
                                                                         .ofNullable(i.getSortOrder()).orElse(0)))
-                                                        .map(i -> Map.of(
-                                                                        "id", i.getId(),
-                                                                        "url", i.getUrl(),
-                                                                        "alt", i.getAlt(),
-                                                                        "sortOrder", i.getSortOrder()))
+                                                        .map(i -> {
+                                                                Map<String, Object> im = new LinkedHashMap<>();
+                                                                im.put("id", i.getId());
+                                                                im.put("url", i.getUrl());
+                                                                im.put("alt", i.getAlt());
+                                                                im.put("sortOrder", i.getSortOrder());
+                                                                return im;
+                                                        })
                                                         .toList());
 
                         return m;
@@ -121,32 +128,40 @@ public class PublicCatalogService {
                         m.put("seoTitle", p.getSeoTitle());
                         m.put("seoDescription", p.getSeoDescription());
                         m.put("published", p.isPublished());
+                        m.put("isNew", p.isNew());
+                        m.put("isBestSeller", p.isBestSeller());
                         m.put("categories", p.getCategories().stream().map(c -> Map.of(
                                         "id", c.getId(),
                                         "slug", c.getSlug(),
                                         "name", c.getName())).toList());
                         List<ProductVariant> variants = variantsByProduct.getOrDefault(p.getId(), List.of());
-                        m.put("variants", variants.stream().map(v -> Map.of(
-                                        "id", v.getId(),
-                                        "sku", v.getSku(),
-                                        "color", v.getColor(),
-                                        "sizeMm", v.getSizeMm(),
-                                        "bridgeMm", v.getBridgeMm(),
-                                        "templeMm", v.getTempleMm(),
-                                        "costPrice", v.getCostPrice(),
-                                        "retailPrice", v.getRetailPrice(),
-                                        "salePrice", v.getSalePrice(),
-                                        "active", v.isActive())).toList());
+                        m.put("variants", variants.stream().map(v -> {
+                                Map<String, Object> vm = new LinkedHashMap<>();
+                                vm.put("id", v.getId());
+                                vm.put("sku", v.getSku());
+                                vm.put("color", v.getColor());
+                                vm.put("sizeMm", v.getSizeMm());
+                                vm.put("bridgeMm", v.getBridgeMm());
+                                vm.put("templeMm", v.getTempleMm());
+                                vm.put("costPrice", v.getCostPrice());
+                                vm.put("retailPrice", v.getRetailPrice());
+                                vm.put("salePrice", v.getSalePrice());
+                                vm.put("active", v.isActive());
+                                return vm;
+                        }).toList());
                         List<ProductImage> images = imagesByProduct.getOrDefault(p.getId(), List.of());
                         m.put("images",
                                         images.stream()
                                                         .sorted(Comparator.comparingInt(i -> Optional
                                                                         .ofNullable(i.getSortOrder()).orElse(0)))
-                                                        .map(i -> Map.of(
-                                                                        "id", i.getId(),
-                                                                        "url", i.getUrl(),
-                                                                        "alt", i.getAlt(),
-                                                                        "sortOrder", i.getSortOrder()))
+                                                        .map(i -> {
+                                                                Map<String, Object> im = new LinkedHashMap<>();
+                                                                im.put("id", i.getId());
+                                                                im.put("url", i.getUrl());
+                                                                im.put("alt", i.getAlt());
+                                                                im.put("sortOrder", i.getSortOrder());
+                                                                return im;
+                                                        })
                                                         .toList());
                         return m;
                 });
@@ -154,6 +169,7 @@ public class PublicCatalogService {
 
         @Transactional(readOnly = true)
         public Map<String, Object> searchProducts(String q, String categorySlug, String material, String frameShape,
+                        Boolean isNew, Boolean isBestSeller,
                         Integer page, Integer size, String sort, String direction,
                         java.math.BigDecimal minPrice, java.math.BigDecimal maxPrice) {
                 int p = page != null && page >= 0 ? page : 0;
@@ -168,6 +184,8 @@ public class PublicCatalogService {
                                 categorySlug,
                                 material,
                                 frameShape,
+                                isNew,
+                                isBestSeller,
                                 minPrice,
                                 maxPrice,
                                 pageable);
@@ -179,6 +197,8 @@ public class PublicCatalogService {
                                 "\"category\":\"" + (categorySlug != null ? categorySlug : "") + "\"," +
                                 "\"material\":\"" + (material != null ? material : "") + "\"," +
                                 "\"frameShape\":\"" + (frameShape != null ? frameShape : "") + "\"," +
+                                "\"isNew\":" + (isNew != null ? isNew : "null") + "," +
+                                "\"isBestSeller\":" + (isBestSeller != null ? isBestSeller : "null") + "," +
                                 "\"minPrice\":" + (minPrice != null ? minPrice : "null") + "," +
                                 "\"maxPrice\":" + (maxPrice != null ? maxPrice : "null") +
                                 "}");
@@ -192,22 +212,53 @@ public class PublicCatalogService {
                         m.put("brand", prod.getBrand());
                         m.put("material", prod.getMaterial());
                         m.put("frameShape", prod.getFrameShape());
-                        // cover image: ảnh sort_order nhỏ nhất
-                        List<ProductImage> images = imageRepository.findByProductIdOrderBySortOrderAsc(prod.getId());
-                        if (!images.isEmpty()) {
-                                m.put("thumbnail", Map.of(
-                                                "id", images.get(0).getId(),
-                                                "url", images.get(0).getUrl(),
-                                                "alt", images.get(0).getAlt()));
-                        }
-                        // tổng tồn
+                        m.put("isNew", prod.isNew());
+                        m.put("isBestSeller", prod.isBestSeller());
+
+                        // Get variants and calculate price range
                         List<ProductVariant> variants = variantRepository.findByProductId(prod.getId());
+                        BigDecimal minVariantPrice = null;
+                        BigDecimal maxVariantPrice = null;
                         int totalStock = 0;
+                        UUID firstVariantId = null;
+                        List<String> colors = new java.util.ArrayList<>();
+
                         for (ProductVariant v : variants) {
+                                if (firstVariantId == null) {
+                                        firstVariantId = v.getId();
+                                }
+                                if (v.getColor() != null && !colors.contains(v.getColor())) {
+                                        colors.add(v.getColor());
+                                }
+                                if (v.getRetailPrice() != null) {
+                                        if (minVariantPrice == null
+                                                        || v.getRetailPrice().compareTo(minVariantPrice) < 0) {
+                                                minVariantPrice = v.getRetailPrice();
+                                        }
+                                        if (maxVariantPrice == null
+                                                        || v.getRetailPrice().compareTo(maxVariantPrice) > 0) {
+                                                maxVariantPrice = v.getRetailPrice();
+                                        }
+                                }
                                 Integer available = inventoryRepository.totalAvailableByVariant(v.getId());
                                 totalStock += (available != null ? available : 0);
                         }
+
+                        m.put("price", minVariantPrice);
+                        m.put("maxPrice", maxVariantPrice);
                         m.put("inStock", totalStock > 0);
+                        m.put("variantId", firstVariantId);
+                        m.put("colors", colors);
+
+                        // cover image: ảnh sort_order nhỏ nhất
+                        List<ProductImage> images = imageRepository.findByProductIdOrderBySortOrderAsc(prod.getId());
+                        if (!images.isEmpty()) {
+                                Map<String, Object> thumbnail = new LinkedHashMap<>();
+                                thumbnail.put("id", images.get(0).getId());
+                                thumbnail.put("url", images.get(0).getUrl());
+                                thumbnail.put("alt", images.get(0).getAlt());
+                                m.put("thumbnail", thumbnail);
+                        }
                         return m;
                 }).toList();
 

@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(ApiConstants.ADMIN_BASE + "/orders")
+@RequestMapping(ApiConstants.ADMIN_BASE + "/orders-management")
 public class AdminOrderManagementController {
 
     private final AdminOrderManagementService adminOrderManagementService;

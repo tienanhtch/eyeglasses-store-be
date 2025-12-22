@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(ApiConstants.ADMIN_BASE + "/users")
+@RequestMapping(ApiConstants.ADMIN_BASE + "/users-management")
 public class AdminUserManagementController {
 
     private final AdminUserManagementService adminUserManagementService;

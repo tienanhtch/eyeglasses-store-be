@@ -25,11 +25,27 @@ public class AuthController {
 
     @PostMapping(ApiConstants.REGISTER)
     public ResponseEntity<Map<String, Object>> register(@RequestBody RegisterRequest body) {
-        return ResponseEntity.ok(authService.register(body.email(), body.password(), body.fullName(), body.phone()));
+        try {
+            Map<String, Object> payload = authService.register(body.email(), body.password(), body.fullName(), body.phone());
+            return ResponseEntity.ok(payload);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "error", ex.getMessage()
+            ));
+        }
     }
 
     @PostMapping(ApiConstants.LOGIN)
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest body) {
-        return ResponseEntity.ok(authService.login(body.email(), body.password()));
+        try {
+            Map<String, Object> payload = authService.login(body.email(), body.password());
+            return ResponseEntity.ok(payload);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(401).body(Map.of(
+                    "success", false,
+                    "error", ex.getMessage()
+            ));
+        }
     }
 }

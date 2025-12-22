@@ -3,12 +3,14 @@ package com.eyeglasses.eyeglasses_store.service;
 import com.eyeglasses.eyeglasses_store.entity.cart.Cart;
 import com.eyeglasses.eyeglasses_store.entity.cart.CartItem;
 import com.eyeglasses.eyeglasses_store.entity.catalog.ProductVariant;
+import com.eyeglasses.eyeglasses_store.entity.catalog.ProductImage;
 import com.eyeglasses.eyeglasses_store.entity.lens.LensPackage;
 import com.eyeglasses.eyeglasses_store.entity.lens.Prescription;
 import com.eyeglasses.eyeglasses_store.entity.user.AppUser;
 import com.eyeglasses.eyeglasses_store.repository.cart.CartItemRepository;
 import com.eyeglasses.eyeglasses_store.repository.cart.CartRepository;
 import com.eyeglasses.eyeglasses_store.repository.catalog.ProductVariantRepository;
+import com.eyeglasses.eyeglasses_store.repository.catalog.ProductImageRepository;
 import com.eyeglasses.eyeglasses_store.repository.lens.LensPackageRepository;
 import com.eyeglasses.eyeglasses_store.repository.lens.PrescriptionRepository;
 import com.eyeglasses.eyeglasses_store.repository.user.AppUserRepository;
@@ -25,6 +27,7 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final AppUserRepository userRepository;
     private final ProductVariantRepository variantRepository;
+    private final ProductImageRepository imageRepository;
     private final LensPackageRepository lensPackageRepository;
     private final PrescriptionRepository prescriptionRepository;
 
@@ -32,12 +35,14 @@ public class CartService {
             CartItemRepository cartItemRepository,
             AppUserRepository userRepository,
             ProductVariantRepository variantRepository,
+            ProductImageRepository imageRepository,
             LensPackageRepository lensPackageRepository,
             PrescriptionRepository prescriptionRepository) {
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
         this.variantRepository = variantRepository;
+        this.imageRepository = imageRepository;
         this.lensPackageRepository = lensPackageRepository;
         this.prescriptionRepository = prescriptionRepository;
     }
@@ -45,7 +50,8 @@ public class CartService {
     @Transactional
     public Map<String, Object> getOrCreateCart(UUID userId) {
         Cart cart = cartRepository.findByUserId(userId).orElseGet(() -> {
-            AppUser user = userRepository.findById(userId).orElseThrow();
+            AppUser user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
             Cart c = new Cart();
             c.setUser(user);
             return cartRepository.save(c);
@@ -57,12 +63,14 @@ public class CartService {
     public Map<String, Object> addItem(UUID userId, UUID variantId, Integer qty, UUID lensPackageId,
             UUID prescriptionId, BigDecimal customPrice, String note) {
         Cart cart = cartRepository.findByUserId(userId).orElseGet(() -> {
-            AppUser user = userRepository.findById(userId).orElseThrow();
+            AppUser user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
             Cart c = new Cart();
             c.setUser(user);
             return cartRepository.save(c);
         });
-        ProductVariant variant = variantRepository.findById(variantId).orElseThrow();
+        ProductVariant variant = variantRepository.findById(variantId)
+                .orElseThrow(() -> new RuntimeException("Product variant not found with ID: " + variantId));
         LensPackage lensPackage = lensPackageId != null ? lensPackageRepository.findById(lensPackageId).orElse(null)
                 : null;
         Prescription prescription = prescriptionId != null
@@ -123,15 +131,35 @@ public class CartService {
             pi.put("id", it.getId());
             pi.put("qty", it.getQty());
             pi.put("note", it.getNote());
-            pi.put("variant", Map.of(
-                    "id", it.getVariant().getId(),
-                    "sku", it.getVariant().getSku(),
-                    "color", it.getVariant().getColor(),
-                    "sizeMm", it.getVariant().getSizeMm(),
-                    "bridgeMm", it.getVariant().getBridgeMm(),
-                    "templeMm", it.getVariant().getTempleMm(),
-                    "retailPrice", it.getVariant().getRetailPrice(),
-                    "salePrice", it.getVariant().getSalePrice()));
+            String productName = null;
+            String productSlug = null;
+            String productImageUrl = null;
+            try {
+                if (it.getVariant() != null && it.getVariant().getProduct() != null) {
+                    productName = it.getVariant().getProduct().getName();
+                    productSlug = it.getVariant().getProduct().getSlug();
+                    java.util.List<ProductImage> imgs = imageRepository
+                            .findByProductIdOrderBySortOrderAsc(it.getVariant().getProduct().getId());
+                    if (!imgs.isEmpty()) {
+                        productImageUrl = imgs.get(0).getUrl();
+                    }
+                }
+            } catch (Exception ignored) {
+            }
+
+            Map<String, Object> variantPayload = new LinkedHashMap<>();
+            variantPayload.put("id", it.getVariant().getId());
+            variantPayload.put("sku", it.getVariant().getSku());
+            variantPayload.put("color", it.getVariant().getColor());
+            variantPayload.put("sizeMm", it.getVariant().getSizeMm());
+            variantPayload.put("bridgeMm", it.getVariant().getBridgeMm());
+            variantPayload.put("templeMm", it.getVariant().getTempleMm());
+            variantPayload.put("retailPrice", it.getVariant().getRetailPrice());
+            variantPayload.put("salePrice", it.getVariant().getSalePrice());
+            variantPayload.put("productName", productName);
+            variantPayload.put("productSlug", productSlug);
+            variantPayload.put("productImageUrl", productImageUrl);
+            pi.put("variant", variantPayload);
             if (it.getLensPackage() != null) {
                 pi.put("lensPackage", Map.of(
                         "id", it.getLensPackage().getId(),

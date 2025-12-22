@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(ApiConstants.ADMIN_BASE + "/stores")
+@RequestMapping(ApiConstants.ADMIN_BASE + "/stores-management")
 public class AdminStoreManagementController {
 
     private final AdminStoreManagementService adminStoreManagementService;

@@ -63,17 +63,20 @@ public class AuthService {
     }
 
     public Map<String, Object> toUserPayload(AppUser user, String token) {
-        Map<String, Object> m = new HashMap<>();
-        m.put("token", token);
-        m.put("user", Map.of(
-                "id", user.getId(),
-                "email", user.getEmail(),
-                "fullName", user.getFullName(),
-                "phone", user.getPhone(),
-                "isActive", user.isActive(),
-                "roles", user.getRoles().stream().map(Role::getCode).toList(),
-                "createdAt", user.getCreatedAt(),
-                "updatedAt", user.getUpdatedAt()));
-        return m;
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("token", token);
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("id", user.getId());
+        userData.put("email", user.getEmail());
+        userData.put("fullName", user.getFullName());
+        userData.put("phone", user.getPhone());
+        userData.put("isActive", user.isActive());
+        userData.put("roles", user.getRoles().stream().map(Role::getCode).toList());
+        userData.put("createdAt", user.getCreatedAt());
+        userData.put("updatedAt", user.getUpdatedAt());
+
+        payload.put("user", userData);
+        return payload;
     }
 }
