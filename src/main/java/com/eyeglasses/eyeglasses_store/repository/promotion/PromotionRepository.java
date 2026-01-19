@@ -31,4 +31,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, UUID> {
 
     @Query("SELECT COUNT(p) FROM Promotion p WHERE p.active = true AND p.startDate <= :now AND p.endDate >= :now")
     long countCurrentlyValidPromotions(@Param("now") OffsetDateTime now);
+
+    @Query("SELECT COALESCE(SUM(p.usedCount), 0) FROM Promotion p")
+    long sumTotalUsedCount();
 }

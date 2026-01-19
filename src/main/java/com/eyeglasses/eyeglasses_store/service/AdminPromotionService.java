@@ -159,11 +159,13 @@ public class AdminPromotionService {
         long totalPromotions = promotionRepository.count();
         long activePromotions = promotionRepository.countActivePromotions();
         long validPromotions = promotionRepository.countCurrentlyValidPromotions(OffsetDateTime.now());
+        long totalUsedCount = promotionRepository.sumTotalUsedCount();
 
         return Map.of(
                 "total", totalPromotions,
                 "active", activePromotions,
                 "valid", validPromotions,
+                "used", totalUsedCount,
                 "expired", totalPromotions - validPromotions);
     }
 }
