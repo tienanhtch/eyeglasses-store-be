@@ -77,6 +77,15 @@ public class AdminOrderService {
         m.put("grandTotal", o.getGrandTotal());
         m.put("createdAt", o.getCreatedAt());
         m.put("updatedAt", o.getUpdatedAt());
+        Map<String, Object> customer = new LinkedHashMap<>();
+        if (o.getUser() != null) {
+            customer.put("id", o.getUser().getId());
+            customer.put("name", o.getUser().getFullName());
+            customer.put("email", o.getUser().getEmail());
+            customer.put("phone", o.getUser().getPhone());
+        }
+        m.put("customer", customer);
+
         m.put("items", items.stream().map(oi -> Map.of(
                 "id", oi.getId(),
                 "nameSnapshot", oi.getNameSnapshot(),

@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create  # create = xóa và tạo lại bảng mỗi lần khởi động (chỉ dùng dev)
+      ddl-auto: none  # create = xóa và tạo lại bảng mỗi lần khởi động (chỉ dùng dev)
     show-sql: true
     properties:
       hibernate.format_sql: true

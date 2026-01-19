@@ -21,6 +21,11 @@ public class AdminLensBulkController {
         this.adminLensBulkService = adminLensBulkService;
     }
 
+    @GetMapping("/packages")
+    public ResponseEntity<List<LensPackage>> getAllLensPackages() {
+        return ResponseEntity.ok(adminLensBulkService.getAllLensPackages());
+    }
+
     @PostMapping("/packages")
     public ResponseEntity<Map<String, Object>> createLensPackage(@RequestBody Map<String, Object> packageData) {
         try {
@@ -30,6 +35,23 @@ public class AdminLensBulkController {
                     "lensPackageId", lensPackage.getId(),
                     "code", lensPackage.getCode(),
                     "name", lensPackage.getName()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "error", e.getMessage()));
+        }
+    }
+
+    @PutMapping("/packages/{lensPackageId}")
+    public ResponseEntity<Map<String, Object>> updateLensPackage(
+            @PathVariable UUID lensPackageId,
+            @RequestBody Map<String, Object> packageData) {
+        try {
+            LensPackage lensPackage = adminLensBulkService.updateLensPackage(lensPackageId, packageData);
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "lensPackageId", lensPackage.getId(),
+                    "message", "Lens package updated successfully"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of(
                     "success", false,
@@ -138,4 +160,3 @@ public class AdminLensBulkController {
         }
     }
 }
-

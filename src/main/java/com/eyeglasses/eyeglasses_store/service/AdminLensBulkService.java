@@ -19,6 +19,11 @@ public class AdminLensBulkService {
         this.lensPackageRepository = lensPackageRepository;
     }
 
+    @Transactional(readOnly = true)
+    public List<LensPackage> getAllLensPackages() {
+        return lensPackageRepository.findAll();
+    }
+
     @Transactional
     public LensPackage createLensPackage(Map<String, Object> packageData) {
         LensPackage lensPackage = new LensPackage();
@@ -54,6 +59,53 @@ public class AdminLensBulkService {
             lensPackage.setSalePrice(new BigDecimal(packageData.get("salePrice").toString()));
         }
         lensPackage.setActive((Boolean) packageData.getOrDefault("active", true));
+
+        return lensPackageRepository.save(lensPackage);
+    }
+
+    @Transactional
+    public LensPackage updateLensPackage(UUID lensPackageId, Map<String, Object> packageData) {
+        LensPackage lensPackage = lensPackageRepository.findById(lensPackageId).orElseThrow();
+        // Do NOT update code to avoid unique constraint violations if it's not changed
+        // or conflicts
+        // If code update is needed, must check uniqueness. For now, we allow updating
+        // other fields.
+        // If code is passed and different, we might want to check, but usually ID is
+        // immutable.
+        // Let's assume CODE is immutable for now or handled carefully.
+
+        if (packageData.containsKey("name"))
+            lensPackage.setName((String) packageData.get("name"));
+        if (packageData.containsKey("refractiveIdx"))
+            lensPackage.setRefractiveIdx(new BigDecimal(packageData.get("refractiveIdx").toString()));
+
+        if (packageData.containsKey("features")) {
+            @SuppressWarnings("unchecked")
+            List<String> features = (List<String>) packageData.get("features");
+            if (features != null) {
+                lensPackage.setFeatures(String.join(",", features));
+            }
+        }
+
+        if (packageData.containsKey("minSph"))
+            lensPackage.setMinSph(new BigDecimal(packageData.get("minSph").toString()));
+        if (packageData.containsKey("maxSph"))
+            lensPackage.setMaxSph(new BigDecimal(packageData.get("maxSph").toString()));
+        if (packageData.containsKey("minCyl"))
+            lensPackage.setMinCyl(new BigDecimal(packageData.get("minCyl").toString()));
+        if (packageData.containsKey("maxCyl"))
+            lensPackage.setMaxCyl(new BigDecimal(packageData.get("maxCyl").toString()));
+
+        if (packageData.containsKey("retailPrice"))
+            lensPackage.setRetailPrice(new BigDecimal(packageData.get("retailPrice").toString()));
+        if (packageData.containsKey("salePrice")) {
+            Object salePrice = packageData.get("salePrice");
+            if (salePrice != null) {
+                lensPackage.setSalePrice(new BigDecimal(salePrice.toString()));
+            } else {
+                lensPackage.setSalePrice(null);
+            }
+        }
 
         return lensPackageRepository.save(lensPackage);
     }
