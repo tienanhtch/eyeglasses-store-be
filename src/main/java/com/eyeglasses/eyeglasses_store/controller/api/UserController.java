@@ -36,6 +36,13 @@ public class UserController {
         return ResponseEntity.ok(userService.createAddress(userId, body));
     }
 
+    @DeleteMapping("/addresses/{addressId}")
+    public ResponseEntity<Void> deleteAddress(@RequestParam("userId") UUID userId,
+            @PathVariable UUID addressId) {
+        userService.deleteAddress(userId, addressId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/saved-filters")
     public ResponseEntity<List<Map<String, Object>>> savedFilters(@RequestParam("userId") UUID userId) {
         return ResponseEntity.ok(userService.listSavedFilters(userId));

@@ -50,6 +50,20 @@ public class UserService {
     @Transactional
     public Map<String, Object> createAddress(UUID userId, Map<String, Object> body) {
         AppUser user = userRepository.findById(userId).orElseThrow();
+
+        // If this address is being set as default, unset all other default addresses
+        // for this user
+        boolean isDefault = Boolean.TRUE.equals(body.get("isDefault"));
+        if (isDefault) {
+            List<Address> existingAddresses = addressRepository.findByUserIdOrderByCreatedAtDesc(userId);
+            for (Address addr : existingAddresses) {
+                if (addr.isDefaultAddress()) {
+                    addr.setDefaultAddress(false);
+                    addressRepository.save(addr);
+                }
+            }
+        }
+
         Address address = new Address();
         address.setUser(user);
         address.setRecipient((String) body.get("recipient"));
@@ -62,10 +76,22 @@ public class UserService {
         address.setPostalCode((String) body.get("postalCode"));
         if (body.get("country") != null)
             address.setCountry((String) body.get("country"));
-        if (body.get("isDefault") != null)
-            address.setDefaultAddress(Boolean.TRUE.equals(body.get("isDefault")));
+        address.setDefaultAddress(isDefault);
         Address saved = addressRepository.save(address);
         return toAddressPayload(saved);
+    }
+
+    @Transactional
+    public void deleteAddress(UUID userId, UUID addressId) {
+        Address address = addressRepository.findById(addressId)
+                .orElseThrow(() -> new RuntimeException("Address not found"));
+
+        // Verify that the address belongs to the user
+        if (!address.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Unauthorized to delete this address");
+        }
+
+        addressRepository.delete(address);
     }
 
     private Map<String, Object> toAddressPayload(Address a) {
