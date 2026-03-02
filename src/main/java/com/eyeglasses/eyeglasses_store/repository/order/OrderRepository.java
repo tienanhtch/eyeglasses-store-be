@@ -11,4 +11,7 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
     List<Order> findByUserIdOrderByCreatedAtDesc(UUID userId);
 
     Optional<Order> findByOrderNo(String orderNo);
+
+    @org.springframework.data.jpa.repository.Query("SELECT COALESCE(SUM(o.grandTotal), 0) FROM Order o WHERE o.status = 'COMPLETED'")
+    Double sumRevenue();
 }

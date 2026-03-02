@@ -24,8 +24,8 @@ File: `src/main/resources/application.yaml`
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/eyeglasses_store?useSSL=false&serverTimezone=UTC
-    username: root        # Đổi username nếu cần
-    password:             # Thêm password nếu có
+    username: root       
+    password:             
 ```
 
 ### 3. Chạy Backend

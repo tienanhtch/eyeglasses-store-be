@@ -153,6 +153,7 @@ public class AdminOrderManagementService {
         long shippedOrders = 0;
         long completedOrders = 0;
         long cancelledOrders = 0;
+        Double totalRevenue = orderRepository.sumRevenue();
 
         return Map.of(
                 "total", totalOrders,
@@ -160,6 +161,7 @@ public class AdminOrderManagementService {
                 "processing", processingOrders,
                 "shipped", shippedOrders,
                 "completed", completedOrders,
-                "cancelled", cancelledOrders);
+                "cancelled", cancelledOrders,
+                "revenue", totalRevenue);
     }
 }
