@@ -5,22 +5,28 @@ import com.eyeglasses.eyeglasses_store.entity.catalog.Category;
 import com.eyeglasses.eyeglasses_store.entity.catalog.Product;
 import com.eyeglasses.eyeglasses_store.entity.catalog.ProductImage;
 import com.eyeglasses.eyeglasses_store.entity.catalog.ProductVariant;
+import com.eyeglasses.eyeglasses_store.repository.catalog.ProductImageRepository;
+import com.eyeglasses.eyeglasses_store.repository.catalog.ProductVariantRepository;
 import com.eyeglasses.eyeglasses_store.service.AdminCatalogService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping(ApiConstants.ADMIN_BASE)
 public class AdminCatalogController {
 
     private final AdminCatalogService adminCatalogService;
+    private final ProductVariantRepository variantRepository;
+    private final ProductImageRepository imageRepository;
 
-    public AdminCatalogController(AdminCatalogService adminCatalogService) {
+    public AdminCatalogController(AdminCatalogService adminCatalogService,
+            ProductVariantRepository variantRepository,
+            ProductImageRepository imageRepository) {
         this.adminCatalogService = adminCatalogService;
+        this.variantRepository = variantRepository;
+        this.imageRepository = imageRepository;
     }
 
     // Categories
@@ -53,25 +59,49 @@ public class AdminCatalogController {
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String sortOrder) {
         List<Product> allProducts = adminCatalogService.listProducts();
-        
-        // Calculate pagination
-        int totalElements = allProducts.size();
+
+        // Enrich with variant count and first image
+        List<Map<String, Object>> enriched = allProducts.stream().map(p -> {
+            Map<String, Object> m = new LinkedHashMap<>();
+            m.put("id", p.getId());
+            m.put("slug", p.getSlug());
+            m.put("name", p.getName());
+            m.put("brand", p.getBrand());
+            m.put("material", p.getMaterial());
+            m.put("published", p.isPublished());
+            m.put("categories", p.getCategories().stream()
+                    .map(c -> Map.of("id", c.getId(), "name", c.getName())).toList());
+            // Variant count
+            int variantCount = variantRepository.findByProductId(p.getId()).size();
+            m.put("variantCount", variantCount);
+            // First image
+            List<ProductImage> imgs = imageRepository.findByProductIdOrderBySortOrderAsc(p.getId());
+            if (!imgs.isEmpty()) {
+                m.put("images", List.of(Map.of(
+                        "id", imgs.get(0).getId(),
+                        "url", imgs.get(0).getUrl(),
+                        "alt", imgs.get(0).getAlt() != null ? imgs.get(0).getAlt() : "")));
+            } else {
+                m.put("images", List.of());
+            }
+            return m;
+        }).toList();
+
+        // Pagination
+        int totalElements = enriched.size();
         int totalPages = (int) Math.ceil((double) totalElements / size);
         int start = page * size;
         int end = Math.min(start + size, totalElements);
-        
-        // Get page content
-        List<Product> content = (start < totalElements) 
-            ? allProducts.subList(start, end) 
-            : List.of();
-        
+        List<Map<String, Object>> content = (start < totalElements)
+                ? enriched.subList(start, end)
+                : List.of();
+
         return ResponseEntity.ok(Map.of(
-            "content", content,
-            "totalElements", totalElements,
-            "totalPages", totalPages,
-            "currentPage", page,
-            "pageSize", size
-        ));
+                "content", content,
+                "totalElements", totalElements,
+                "totalPages", totalPages,
+                "currentPage", page,
+                "pageSize", size));
     }
 
     @PostMapping("/products")
@@ -88,6 +118,11 @@ public class AdminCatalogController {
     public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable("id") UUID id) {
         adminCatalogService.deleteProduct(id);
         return ResponseEntity.ok(Map.of("status", "ok"));
+    }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Map<String, Object>> getProduct(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(adminCatalogService.getProductDetail(id));
     }
 
     // Variants

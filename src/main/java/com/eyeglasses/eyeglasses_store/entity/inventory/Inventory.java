@@ -2,6 +2,7 @@ package com.eyeglasses.eyeglasses_store.entity.inventory;
 
 import com.eyeglasses.eyeglasses_store.entity.catalog.ProductVariant;
 import com.eyeglasses.eyeglasses_store.entity.store.Store;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -18,10 +19,12 @@ public class Inventory {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "variant_id", nullable = false)
     private ProductVariant variant;

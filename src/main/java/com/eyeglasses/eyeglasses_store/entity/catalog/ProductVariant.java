@@ -2,6 +2,7 @@ package com.eyeglasses.eyeglasses_store.entity.catalog;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -18,6 +19,7 @@ public class ProductVariant {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;

@@ -147,6 +147,9 @@ public class PublicCatalogService {
                                 vm.put("retailPrice", v.getRetailPrice());
                                 vm.put("salePrice", v.getSalePrice());
                                 vm.put("active", v.isActive());
+                                // Tồn kho khả dụng
+                                Integer available = inventoryRepository.totalAvailableByVariant(v.getId());
+                                vm.put("totalAvailable", available != null ? available : 0);
                                 return vm;
                         }).toList());
                         List<ProductImage> images = imagesByProduct.getOrDefault(p.getId(), List.of());

@@ -1,10 +1,12 @@
 package com.eyeglasses.eyeglasses_store.service;
 
 import com.eyeglasses.eyeglasses_store.entity.catalog.*;
+import com.eyeglasses.eyeglasses_store.entity.inventory.Inventory;
 import com.eyeglasses.eyeglasses_store.repository.catalog.CategoryRepository;
 import com.eyeglasses.eyeglasses_store.repository.catalog.ProductImageRepository;
 import com.eyeglasses.eyeglasses_store.repository.catalog.ProductRepository;
 import com.eyeglasses.eyeglasses_store.repository.catalog.ProductVariantRepository;
+import com.eyeglasses.eyeglasses_store.repository.inventory.InventoryRepository;
 import com.eyeglasses.eyeglasses_store.repository.lens.LensPackageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,17 +22,20 @@ public class AdminCatalogService {
     private final ProductVariantRepository variantRepository;
     private final ProductImageRepository imageRepository;
     private final LensPackageRepository lensPackageRepository;
+    private final InventoryRepository inventoryRepository;
 
     public AdminCatalogService(CategoryRepository categoryRepository,
             ProductRepository productRepository,
             ProductVariantRepository variantRepository,
             ProductImageRepository imageRepository,
-            LensPackageRepository lensPackageRepository) {
+            LensPackageRepository lensPackageRepository,
+            InventoryRepository inventoryRepository) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.variantRepository = variantRepository;
         this.imageRepository = imageRepository;
         this.lensPackageRepository = lensPackageRepository;
+        this.inventoryRepository = inventoryRepository;
     }
 
     // Categories
@@ -144,7 +149,73 @@ public class AdminCatalogService {
 
     @Transactional
     public void deleteProduct(UUID id) {
+        // Xóa đúng thứ tự FK: inventory → variants → images → product
+        List<ProductVariant> variants = variantRepository.findByProductId(id);
+        for (ProductVariant v : variants) {
+            // Xóa inventory của variant này
+            List<Inventory> invList = inventoryRepository.findByVariantId(v.getId());
+            inventoryRepository.deleteAll(invList);
+        }
+        inventoryRepository.flush();
+        // Xóa variants
+        variantRepository.deleteAll(variants);
+        variantRepository.flush();
+        // Xóa images
+        List<ProductImage> images = imageRepository.findByProductIdOrderBySortOrderAsc(id);
+        imageRepository.deleteAll(images);
+        imageRepository.flush();
+        // Cuối cùng xóa product
         productRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getProductDetail(UUID id) {
+        Product p = productRepository.findById(id).orElseThrow();
+        List<ProductVariant> variants = variantRepository.findByProductId(id);
+        List<ProductImage> images = imageRepository.findByProductIdOrderBySortOrderAsc(id);
+
+        Map<String, Object> m = new java.util.LinkedHashMap<>();
+        m.put("id", p.getId());
+        m.put("slug", p.getSlug());
+        m.put("name", p.getName());
+        m.put("description", p.getDescription());
+        m.put("brand", p.getBrand());
+        m.put("material", p.getMaterial());
+        m.put("frameShape", p.getFrameShape());
+        m.put("seoTitle", p.getSeoTitle());
+        m.put("seoDescription", p.getSeoDescription());
+        m.put("published", p.isPublished());
+        m.put("categories", p.getCategories().stream().map(c -> Map.of(
+                "id", c.getId(), "name", c.getName(), "slug", c.getSlug())).toList());
+        m.put("variants", variants.stream().map(v -> {
+            Map<String, Object> vm = new java.util.LinkedHashMap<>();
+            vm.put("id", v.getId());
+            vm.put("sku", v.getSku());
+            vm.put("color", v.getColor());
+            vm.put("sizeMm", v.getSizeMm());
+            vm.put("bridgeMm", v.getBridgeMm());
+            vm.put("templeMm", v.getTempleMm());
+            vm.put("retailPrice", v.getRetailPrice());
+            vm.put("salePrice", v.getSalePrice());
+            vm.put("isActive", v.isActive());
+            // Inventory per store cho admin
+            List<Inventory> invList = inventoryRepository.findByVariantId(v.getId());
+            Map<String, Integer> stockByStore = new LinkedHashMap<>();
+            for (Inventory inv : invList) {
+                stockByStore.put(inv.getStore().getId().toString(), inv.getOnHand());
+            }
+            vm.put("stockByStore", stockByStore);
+            return vm;
+        }).toList());
+        m.put("images", images.stream().map(i -> {
+            Map<String, Object> im = new java.util.LinkedHashMap<>();
+            im.put("id", i.getId());
+            im.put("url", i.getUrl());
+            im.put("alt", i.getAlt());
+            im.put("sortOrder", i.getSortOrder());
+            return im;
+        }).toList());
+        return m;
     }
 
     // Variants
@@ -192,6 +263,10 @@ public class AdminCatalogService {
 
     @Transactional
     public void deleteVariant(UUID variantId) {
+        // Xóa inventory trước khi xóa variant
+        List<Inventory> invList = inventoryRepository.findByVariantId(variantId);
+        inventoryRepository.deleteAll(invList);
+        inventoryRepository.flush();
         variantRepository.deleteById(variantId);
     }
 
